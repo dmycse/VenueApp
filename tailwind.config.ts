@@ -37,6 +37,8 @@ export default withUt({
         },
         black: '#000000',
         white: '#FFFFFF',
+        brand: '#35185A',
+        logo:  '#BB84E8',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
