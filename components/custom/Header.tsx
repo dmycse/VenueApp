@@ -15,7 +15,7 @@ export default function Header() {
           <Image 
             src="/assets/images/logo.svg"
             alt="Vunuely logo"
-            width={38}
+            width={48}
             height={18}
           />
           <span className='text-3xl font-semibold text-brand'>Venuely</span>
