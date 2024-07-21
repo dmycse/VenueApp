@@ -70,10 +70,14 @@ export async function POST(req: Request) {
     if(newUser) {
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
-          userId: User.findOne({ clerkId: newUser._id }).exec(),
+          userId: id
           }
       })
     }
+
+    // publicMetadata: {
+    //   userId: User.findOne({ clerkId: id }).exec(),
+    //   }
 
     // publicMetadata: {
     //   userId: newUser._id
