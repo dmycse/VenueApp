@@ -26,7 +26,8 @@
     "svix": "^1.25.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^6.13.2"
+    "uploadthing": "^6.13.2",
+    "whatwg-url": "^14.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
