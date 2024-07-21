@@ -1,9 +1,9 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
-import { WebhookEvent, clerkClient } from '@clerk/nextjs/server';
+import { User, WebhookEvent, clerkClient } from '@clerk/nextjs/server';
 import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions';
 import { NextResponse } from 'next/server';
-import User from '@/lib/database/models/user.model';
+import { CreateUserParams } from '@/types';
  
 export async function POST(req: Request) {
  console.log('POST request')
@@ -56,24 +56,42 @@ export async function POST(req: Request) {
   if(eventType === 'user.created') {
     const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
 
-    const user = {
-      clerkId: id,
-      email: email_addresses[0].email_address,
-      username: username!,
-      firstName: first_name as string,
-      lastName: last_name as string,
-      photo: image_url,
-    }
-
-    const newUser = await createUser(user);
-
-    if(newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: id
-          }
+    if (!id || !email_addresses) {
+      return new Response('Error occurred -- missing data', {
+        status: 400
       })
-    }
+  }
+
+  const user = {
+    clerkId: id,
+    email: email_addresses[0].email_address,
+    username: username!,
+    firstName: first_name as string || '',
+    lastName: last_name as string|| '',
+    photo: image_url || '',
+  }
+
+    // const user = {
+    //   clerkId: id,
+    //   email: email_addresses[0].email_address,
+    //   username: username!,
+    //   firstName: first_name!,
+    //   lastName: last_name!,
+    //   photo: image_url,
+    // }
+
+
+    await createUser(user as CreateUserParams);
+
+    // const newUser = await createUser(user);
+
+    // if(newUser) {
+    //   await clerkClient.users.updateUserMetadata(id, {
+    //     publicMetadata: {
+    //       userId: newUser._id
+    //       }
+    //   })
+    // }
 
     // publicMetadata: {
     //   userId: User.findOne({ clerkId: id }).exec(),
@@ -83,7 +101,7 @@ export async function POST(req: Request) {
     //   userId: newUser._id
     // }
       
-    return NextResponse.json({ message: 'OK', user: newUser })
+    return NextResponse.json({ message: 'New user has been created' })
   }
 
   if (eventType === 'user.updated') {
