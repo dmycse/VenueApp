@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { WebhookEvent, clerkClient } from '@clerk/nextjs/server';
 import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions';
 import { NextResponse } from 'next/server';
+import User from '@/lib/database/models/user.model';
  
 export async function POST(req: Request) {
  console.log('POST request')
@@ -69,11 +70,15 @@ export async function POST(req: Request) {
     if(newUser) {
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
-          userId: newUser._id
-        }
+          userId: User.findOne({ clerkId: id }).exec(),
+          }
       })
     }
 
+    // publicMetadata: {
+    //   userId: newUser._id
+    // }
+      
     return NextResponse.json({ message: 'OK', user: newUser })
   }
 
