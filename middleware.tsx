@@ -2,19 +2,19 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 // export default clerkMiddleware();
 
-const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
-  '/forum(.*)',
-]);
+// const isProtectedRoute = createRouteMatcher([
+//   '/dashboard(.*)',
+//   '/forum(.*)',
+// ]);
 
-export default clerkMiddleware((auth, req) => {
-  if (!auth().userId && isProtectedRoute(req)) {
+// export default clerkMiddleware((auth, req) => {
+//   if (!auth().userId && isProtectedRoute(req)) {
 
-    // Add custom logic to run before redirecting
+//     // Add custom logic to run before redirecting
 
-    return auth().redirectToSignIn();
-  }
-});
+//     return auth().redirectToSignIn();
+//   }
+// });
 
 // const isPublicRoute = createRouteMatcher([
 //   '/', '/events/:id', '/api/hooks/clerk', '/api/hook/stripe', 'api/uploadthing']);
@@ -24,6 +24,8 @@ export default clerkMiddleware((auth, req) => {
 //     auth().protect();
 //   }
 // });
+
+export default clerkMiddleware();
 
 export const config = {
   matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
